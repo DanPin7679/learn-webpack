@@ -1,6 +1,6 @@
 // const webpack = require("webpack");
 // const path = require("path");
-// const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 let mode = "development";
@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === "production") {
   mode = "production";
 }
 
+const deps = require("./package.json").dependencies;
 module.exports = {
   mode: mode,
   // target: "web",
@@ -30,26 +31,26 @@ module.exports = {
     // https: false,
   },
   plugins: [
-    // new ModuleFederationPlugin({
-    //   name: "host",
-    //   filename: "remoteEntry.js",
-    //   remotes: {
-    //     // Simulator:
-    //     //   "simulator@https://finplanaap-simulator.vercel.app/remoteEntry.js",
-    //   },
-    //   exposes: {},
-    //   shared: {
-    //     ...deps,
-    //     react: {
-    //       singleton: true,
-    //       requiredVersion: deps.react,
-    //     },
-    //     "react-dom": {
-    //       singleton: true,
-    //       requiredVersion: deps["react-dom"],
-    //     },
-    //   },
-    // }),
+    new ModuleFederationPlugin({
+      name: "host",
+      filename: "remoteEntry.js",
+      remotes: {
+        Simulator:
+          "simulator@https://finplanaap-simulator.vercel.app/remoteEntry.js",
+      },
+      exposes: {},
+      shared: {
+        ...deps,
+        react: {
+          singleton: true,
+          requiredVersion: deps.react,
+        },
+        "react-dom": {
+          singleton: true,
+          requiredVersion: deps["react-dom"],
+        },
+      },
+    }),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
