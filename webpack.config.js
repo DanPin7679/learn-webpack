@@ -1,7 +1,7 @@
 // const webpack = require("webpack");
 // const path = require("path");
 // const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-// const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 let mode = "development";
 if (process.env.NODE_ENV === "production") {
@@ -50,9 +50,9 @@ module.exports = {
     //     },
     //   },
     // }),
-    // new HtmlWebPackPlugin({
-    //   template: "./src/index.html",
-    // }),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
   ],
   module: {
     rules: [
